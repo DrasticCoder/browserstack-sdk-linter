@@ -2,9 +2,12 @@
   "name": "browserstack-sdk-linter",
   "displayName": "browserstack-sdk-linter",
   "description": "simple extension to validate your browserstack sdk configuration/capabilities",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "repository": "https://github.com/DrasticCoder/browserstack-sdk-linter",
+  "publisher": "DrasticCoder",
+  "icon": "assets/logo.png",
   "engines": {
-    "vscode": "^1.118.0"
+    "vscode": "*"
   },
   "categories": [
     "Other"
@@ -46,7 +49,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
-    "@types/vscode": "^1.118.0",
+    "@types/vscode": "^1.3.0",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
     "esbuild": "^0.27.3",

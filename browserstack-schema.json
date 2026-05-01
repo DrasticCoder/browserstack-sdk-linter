@@ -25,7 +25,30 @@
             "enum": ["Windows", "OS X", "ios", "android"]
           },
           "osVersion": {
-            "anyOf": [{ "type": "integer" }, { "type": "string" }]
+            "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "Tahoe",
+            "Sequoia",
+            "Sonoma",
+            "Ventura",
+            "Monterey",
+            "Big Sur",
+            "Catalina",
+            "Mojave",
+            "High Sierra",
+            "Sierra",
+            "El Capitan",
+            "Yosemite",
+            "Mavericks",
+            "Mountain Lion",
+            "Lion",
+            "Snow Leopard"
+          ]
+        },
+        { "type": "integer" }
+      ]
           },
           "browserName": {
             "type": "string",
@@ -63,15 +86,6 @@
               "driver": { "type": "string" },
               "enablePopups": { "type": "boolean" },
               "allowAllCookies": { "type": "boolean" }
-            }
-          },
-          "ie": {
-            "type": "object",
-            "properties": {
-              "driver": { "type": "string" },
-              "noFlash": { "type": "boolean" },
-              "compatibility": { "type": "string" },
-              "sendKeys": { "type": "boolean" }
             }
           }
         }
