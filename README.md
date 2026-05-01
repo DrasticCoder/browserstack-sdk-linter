@@ -1,71 +1,54 @@
-# browserstack-sdk-linter README
+# BrowserStack SDK Linter
 
-This is the README for your extension "browserstack-sdk-linter". After writing up a brief description, we recommend including the following sections.
+A simple VS Code extension for BrowserStack SDK configuration files.
 
-## Features
+It helps you work with `browserstack.yml` by providing:
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Linting for BrowserStack SDK config
+- Autocompletion and suggestions
+- Validation for supported capabilities
+- Credential checks for `userName` and `accessKey`
+- BrowserStack plan verification using the Automate plan API
 
-For example if there is an image subfolder under your extension project workspace:
+## Usage
 
-\!\[feature X\]\(images/feature-x.png\)
+Open a `browserstack.yml` file in VS Code.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+The extension will automatically provide validation and suggestions. To verify credentials, use one of these options:
 
-## Requirements
+- Click **Verify BrowserStack Credentials** in the editor
+- Run **Verify BrowserStack Credentials** from the Command Palette
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Example
 
-## Extension Settings
+```yaml
+userName: YOUR_BROWSERSTACK_USERNAME
+accessKey: YOUR_BROWSERSTACK_ACCESS_KEY
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+platforms:
+  - os: Windows
+    osVersion: 11
+    browserName: Chrome
+    browserVersion: latest
+```
 
-For example:
+## Credential Check
 
-This extension contributes the following settings:
+The extension checks credentials using:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+```text
+https://api.browserstack.com/automate/plan.json
+```
 
-## Known Issues
+Credentials are only used for this verification request and are not stored.
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+## Development
 
-## Release Notes
+```bash
+npm install
+npm run compile
+```
 
-Users appreciate release notes as you update your extension.
+## Repository
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+[github.com/DrasticCoder/browserstack-sdk-linter](https://github.com/DrasticCoder/browserstack-sdk-linter)
