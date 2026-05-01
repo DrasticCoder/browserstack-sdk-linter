@@ -12,6 +12,12 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "yamlValidation": [
+      {
+        "fileMatch": "browserstack.yml",
+        "url": "./browserstack-schema.json"
+      }
+    ],
     "commands": [
       {
         "command": "browserstack-sdk-linter.helloWorld",

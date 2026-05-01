@@ -1,0 +1,148 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "userName": {
+      "type": "string",
+      "description": "Your BrowserStack Username."
+    },
+    "accessKey": {
+      "type": "string",
+      "description": "Your BrowserStack Access Key."
+    },
+    "framework": {
+      "type": "string",
+      "description": "Required for Java-based frameworks (e.g., testng, cucumber)."
+    },
+    "parallelsPerPlatform": { "type": "integer", "default": 1 },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "os": {
+            "type": "string",
+            "enum": ["Windows", "OS X", "ios", "android"]
+          },
+          "osVersion": {
+            "anyOf": [{ "type": "integer" }, { "type": "string" }]
+          },
+          "browserName": {
+            "type": "string",
+            "enum": ["Chrome", "Edge", "Firefox", "Safari", "IE", "Samsung"]
+          },
+          "browserVersion": {
+            "anyOf": [{ "type": "string" }, { "type": "number" }]
+          },
+          "deviceName": { "type": "string" },
+          "chrome": {
+            "type": "object",
+            "properties": { "driver": { "type": "string" } }
+          },
+          "chromeOptions": {
+            "type": "object",
+            "properties": {
+              "args": { "type": "array", "items": { "type": "string" } },
+              "perfLoggingPrefs": { "type": "object" }
+            }
+          },
+          "edge": {
+            "type": "object",
+            "properties": {
+              "enablePopups": { "type": "boolean" },
+              "enableSidebar": { "type": "boolean" }
+            }
+          },
+          "firefox": {
+            "type": "object",
+            "properties": { "driver": { "type": "string" } }
+          },
+          "safari": {
+            "type": "object",
+            "properties": {
+              "driver": { "type": "string" },
+              "enablePopups": { "type": "boolean" },
+              "allowAllCookies": { "type": "boolean" }
+            }
+          },
+          "ie": {
+            "type": "object",
+            "properties": {
+              "driver": { "type": "string" },
+              "noFlash": { "type": "boolean" },
+              "compatibility": { "type": "string" },
+              "sendKeys": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "projectName": { "type": "string" },
+    "buildName": { "type": "string" },
+    "buildIdentifier": {
+      "type": "string",
+      "description": "Use expressions like #${BUILD_NUMBER} or ${DATE_TIME}"
+    },
+    "browserstackLocal": { "type": "boolean", "default": false },
+    "browserStackLocalOptions": {
+      "type": "object",
+      "properties": {
+        "forceLocal": { "type": "boolean" },
+        "localIdentifier": { "type": "string" },
+        "proxyHost": { "type": "string" },
+        "proxyPort": { "type": "integer" },
+        "proxyUser": { "type": "string" },
+        "proxyPass": { "type": "string" },
+        "verbose": { "type": "integer" }
+      }
+    },
+    "debug": { "type": "boolean" },
+    "networkLogs": { "type": "boolean" },
+    "consoleLogs": {
+      "type": "string",
+      "enum": ["disable", "errors", "warnings", "info", "verbose"]
+    },
+    "video": { "type": "boolean" },
+    "seleniumLogs": { "type": "boolean" },
+    "telemetryLogs": { "type": "boolean" },
+    "testObservability": { "type": "boolean" },
+    "geoLocation": {
+      "type": "string",
+      "description": "Country code (e.g., US, IN, CN)"
+    },
+    "timezone": { "type": "string" },
+    "resolution": { "type": "string", "pattern": "^\\d+x\\d+$" },
+    "idleTimeout": { "type": "integer" },
+    "deviceOrientation": {
+      "type": "string",
+      "enum": ["portrait", "landscape"]
+    },
+    "networkProfile": {
+      "enum": [
+        "2g-gprs-good",
+        "2g-gprs-lossy",
+        "edge-good",
+        "edge-lossy",
+        "3g-umts-good",
+        "3g-umts-lossy",
+        "4g-lte-good",
+        "4g-lte-lossy",
+        "no-internet"
+      ]
+    },
+    "customNetwork": {
+      "type": "string",
+      "description": "Download, Upload, Latency, Packet Loss"
+    },
+    "disableCorsRestrictions": { "type": "boolean" },
+    "enableApplePay": { "type": "boolean" },
+    "percy": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "captureMode": { "type": "string", "enum": ["auto", "manual", "click"] }
+      }
+    }
+  },
+  "required": ["userName", "accessKey", "platforms"]
+}
