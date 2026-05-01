@@ -2,6 +2,12 @@
 
 A simple VS Code extension for BrowserStack SDK configuration files.
 
+
+
+https://github.com/user-attachments/assets/fbb3180b-6da7-4055-b376-0d3001a7dd42
+
+
+
 It helps you work with `browserstack.yml` by providing:
 
 - Linting for BrowserStack SDK config
