@@ -1,14 +1,14 @@
 {
-  "name": "browserstack-sdk-linter",
-  "displayName": "browserstack-sdk-linter",
-  "description": "simple extension to validate your browserstack sdk configuration/capabilities",
-  "version": "1.0.0",
-  "repository": "https://github.com/DrasticCoder/browserstack-sdk-linter",
-  "publisher": "DrasticCoder",
-  "icon": "assets/logo.png",
+  "name": "bs-sdk-linter",
   "engines": {
-    "vscode": "*"
+    "vscode": "^1.60.0"
   },
+  "displayName": "bs-sdk-linter",
+  "description": "simple extension to validate your browserstack sdk configuration/capabilities",
+  "version": "1.0.2",
+  "repository": "https://github.com/DrasticCoder/browserstack-sdk-linter",
+  "publisher": "Drastic-Coder",
+  "icon": "assets/logo.png",
   "categories": [
     "Other"
   ],

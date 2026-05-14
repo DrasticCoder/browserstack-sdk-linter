@@ -1,5 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BrowserStack SDK Configuration",
+  "description": "Schema for browserstack.yml — covers SDK capabilities.",
   "type": "object",
   "properties": {
     "userName": {
@@ -14,124 +16,400 @@
       "type": "string",
       "description": "Required for Java-based frameworks (e.g., testng, cucumber)."
     },
-    "parallelsPerPlatform": { "type": "integer", "default": 1 },
+    "parallelsPerPlatform": {
+      "type": "integer",
+      "default": 1,
+      "minimum": 1,
+      "description": "Number of parallel threads per platform. Total parallels = parallelsPerPlatform x number of platforms."
+    },
+
+    "app": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "App Automate: app_url (bs://…), custom_id, shareable_id (user/custom_id), or local file path."
+        },
+        {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Absolute or relative path to the app binary."
+            },
+            "custom_id": {
+              "type": "string",
+              "description": "Custom identifier for the uploaded app."
+            }
+          },
+          "required": ["path", "custom_id"],
+          "additionalProperties": false
+        }
+      ],
+      "description": "App Automate only. The application under test."
+    },
+    "appVersion": {
+      "oneOf": [{ "type": "string" }, { "type": "number" }],
+      "description": "App Automate: app version when using custom_id or shareable_id."
+    },
+
     "platforms": {
       "type": "array",
+      "description": "Browser/device combinations to test on.",
       "items": {
         "type": "object",
         "properties": {
           "os": {
             "type": "string",
-            "enum": ["Windows", "OS X", "ios", "android"]
+            "enum": ["Windows", "OS X"],
+            "description": "Automate: operating system for desktop browsers."
           },
           "osVersion": {
             "oneOf": [
-        {
-          "type": "string",
-          "enum": [
-            "Tahoe",
-            "Sequoia",
-            "Sonoma",
-            "Ventura",
-            "Monterey",
-            "Big Sur",
-            "Catalina",
-            "Mojave",
-            "High Sierra",
-            "Sierra",
-            "El Capitan",
-            "Yosemite",
-            "Mavericks",
-            "Mountain Lion",
-            "Lion",
-            "Snow Leopard"
-          ]
-        },
-        { "type": "integer" }
-      ]
+              {
+                "type": "string",
+                "enum": [
+                  "Tahoe",
+                  "Sequoia",
+                  "Sonoma",
+                  "Ventura",
+                  "Monterey",
+                  "Big Sur",
+                  "Catalina",
+                  "Mojave",
+                  "High Sierra",
+                  "Sierra",
+                  "El Capitan",
+                  "Yosemite",
+                  "Mavericks",
+                  "Mountain Lion",
+                  "Lion",
+                  "Snow Leopard",
+                  "11",
+                  "10",
+                  "8.1",
+                  "8",
+                  "7",
+                  "XP"
+                ]
+              },
+              { "type": "integer" }
+            ],
+            "description": "Automate: OS version. macOS names or Windows version numbers."
           },
           "browserName": {
             "type": "string",
-            "enum": ["Chrome", "Edge", "Firefox", "Safari", "IE", "Samsung"]
+            "enum": ["Chrome", "Edge", "Firefox", "Safari", "IE", "Samsung"],
+            "description": "Automate: browser to test on."
           },
           "browserVersion": {
-            "anyOf": [{ "type": "string" }, { "type": "number" }]
+            "anyOf": [{ "type": "string" }, { "type": "number" }],
+            "description": "Automate: browser version (e.g., 'latest', 'latest-1', '114.0')."
           },
-          "deviceName": { "type": "string" },
+          "platformName": {
+            "type": "string",
+            "enum": ["android", "ios"],
+            "description": "App Automate: mobile platform name."
+          },
+          "platformVersion": {
+            "oneOf": [{ "type": "string" }, { "type": "number" }],
+            "description": "App Automate: mobile OS version (e.g., '12.0', 16)."
+          },
+          "deviceName": {
+            "type": "string",
+            "description": "Mobile device name (e.g., 'Samsung Galaxy S22 Ultra', 'iPhone 14 Pro Max')."
+          },
           "chrome": {
             "type": "object",
-            "properties": { "driver": { "type": "string" } }
+            "description": "Chrome-specific capabilities.",
+            "properties": {
+              "driver": {
+                "type": "string",
+                "description": "ChromeDriver version (e.g., '112.0.5615.28')."
+              }
+            },
+            "additionalProperties": false
           },
           "chromeOptions": {
             "type": "object",
+            "description": "Chrome browser options.",
             "properties": {
-              "args": { "type": "array", "items": { "type": "string" } },
-              "perfLoggingPrefs": { "type": "object" }
-            }
+              "args": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Chrome CLI arguments (e.g., '--start-maximized', 'incognito')."
+              },
+              "perfLoggingPrefs": {
+                "type": "object",
+                "description": "Performance logging preferences.",
+                "properties": {
+                  "enableNetwork": { "type": "boolean" }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
           },
           "edge": {
             "type": "object",
+            "description": "Edge-specific capabilities.",
             "properties": {
-              "enablePopups": { "type": "boolean" },
-              "enableSidebar": { "type": "boolean" }
-            }
+              "enablePopups": {
+                "type": "boolean",
+                "description": "Enable popups in Edge."
+              },
+              "enableSidebar": {
+                "type": "boolean",
+                "description": "Enable sidebar in Edge."
+              }
+            },
+            "additionalProperties": false
           },
           "firefox": {
             "type": "object",
-            "properties": { "driver": { "type": "string" } }
+            "description": "Firefox-specific capabilities.",
+            "properties": {
+              "driver": {
+                "type": "string",
+                "description": "GeckoDriver version (e.g., '0.32.0')."
+              }
+            },
+            "additionalProperties": false
           },
           "safari": {
             "type": "object",
+            "description": "Safari-specific capabilities.",
             "properties": {
-              "driver": { "type": "string" },
-              "enablePopups": { "type": "boolean" },
-              "allowAllCookies": { "type": "boolean" }
-            }
+              "driver": {
+                "type": "string",
+                "description": "SafariDriver version (e.g., '2.45')."
+              },
+              "enablePopups": {
+                "type": "boolean",
+                "description": "Enable popups in Safari."
+              },
+              "allowAllCookies": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allow all cookies in Safari."
+              }
+            },
+            "additionalProperties": false
+          },
+          "ie": {
+            "type": "object",
+            "description": "Internet Explorer-specific capabilities.",
+            "properties": {
+              "driver": {
+                "type": "string",
+                "description": "IEDriver version (e.g., '4.0.0')."
+              },
+              "noFlash": { "type": "boolean", "description": "Disable Flash." },
+              "compatibility": {
+                "type": "string",
+                "description": "IE compatibility mode value."
+              },
+              "arch": {
+                "type": "string",
+                "description": "IE architecture value."
+              },
+              "enablePopups": {
+                "type": "boolean",
+                "description": "Enable popups in IE."
+              },
+              "enableSidebar": {
+                "type": "boolean",
+                "description": "Enable sidebar in IE."
+              },
+              "sendKeys": {
+                "type": "boolean",
+                "description": "Allow automatic typing into editable fields."
+              }
+            },
+            "additionalProperties": false
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
-    "projectName": { "type": "string" },
-    "buildName": { "type": "string" },
+
+    "projectName": {
+      "type": "string",
+      "description": "Name of your project for BrowserStack reporting."
+    },
+    "buildName": {
+      "type": "string",
+      "description": "Name of your build for BrowserStack reporting."
+    },
     "buildIdentifier": {
       "type": "string",
-      "description": "Use expressions like #${BUILD_NUMBER} or ${DATE_TIME}"
+      "description": "Unique ID appended to buildName. Use ${BUILD_NUMBER} (incremental) or ${DATE_TIME} (timestamp)."
     },
-    "browserstackLocal": { "type": "boolean", "default": false },
+    "buildTag": { "type": "string", "description": "Tag for the build." },
+    "sessionName": {
+      "type": "string",
+      "description": "Name of the test session."
+    },
+
+    "browserstackLocal": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable BrowserStack Local for testing localhost/staging/private websites."
+    },
     "browserStackLocalOptions": {
       "type": "object",
+      "description": "Advanced BrowserStack Local tunnel configuration.",
       "properties": {
-        "forceLocal": { "type": "boolean" },
-        "localIdentifier": { "type": "string" },
-        "proxyHost": { "type": "string" },
-        "proxyPort": { "type": "integer" },
-        "proxyUser": { "type": "string" },
-        "proxyPass": { "type": "string" },
-        "verbose": { "type": "integer" }
-      }
+        "forceLocal": {
+          "type": "boolean",
+          "default": false,
+          "description": "Resolve all traffic via BrowserStack Local tunnel."
+        },
+        "localIdentifier": {
+          "type": "string",
+          "description": "Identifier for running multiple Local instances simultaneously."
+        },
+        "proxyHost": {
+          "type": "string",
+          "description": "Proxy host (e.g., '127.0.0.1')."
+        },
+        "proxyPort": {
+          "type": "integer",
+          "description": "Proxy port (e.g., 8000)."
+        },
+        "proxyUser": { "type": "string", "description": "Proxy username." },
+        "proxyPass": { "type": "string", "description": "Proxy password." },
+        "verbose": {
+          "type": "integer",
+          "description": "Verbosity level for BrowserStack Local logs (e.g., 3)."
+        },
+        "f": {
+          "type": "string",
+          "description": "Path to folder containing test HTML files on BrowserStack Local."
+        },
+        "-pac-file": {
+          "type": "string",
+          "description": "Absolute path to PAC file for proxy decisioning."
+        },
+        "-use-ca-certificate": {
+          "type": "string",
+          "description": "Absolute path to PEM file for custom CA certificate."
+        },
+        "-use-system-installed-ca": {
+          "type": "boolean",
+          "description": "Use system-installed CA certificates."
+        },
+        "-log-file": {
+          "type": "string",
+          "description": "Path to BrowserStack Local log file."
+        }
+      },
+      "additionalProperties": false
     },
-    "debug": { "type": "boolean" },
-    "networkLogs": { "type": "boolean" },
+
+    "debug": {
+      "type": "boolean",
+      "description": "Enable screenshots for every Selenium/Appium command."
+    },
+    "networkLogs": {
+      "type": "boolean",
+      "description": "Enable HAR-based network log capturing."
+    },
     "consoleLogs": {
       "type": "string",
-      "enum": ["disable", "errors", "warnings", "info", "verbose"]
+      "enum": ["disable", "errors", "warnings", "info", "verbose"],
+      "default": "errors",
+      "description": "Automate: browser console log level to capture."
     },
-    "video": { "type": "boolean" },
-    "seleniumLogs": { "type": "boolean" },
-    "telemetryLogs": { "type": "boolean" },
-    "testObservability": { "type": "boolean" },
+    "video": {
+      "type": "boolean",
+      "description": "Enable video recording of the test session."
+    },
+    "seleniumLogs": {
+      "type": "boolean",
+      "description": "Automate: enable Selenium logs."
+    },
+    "telemetryLogs": {
+      "type": "boolean",
+      "description": "Automate: enable telemetry logs."
+    },
+    "deviceLogs": {
+      "type": "boolean",
+      "description": "App Automate: capture device logs."
+    },
+    "appiumLogs": {
+      "type": "boolean",
+      "description": "App Automate: capture raw Appium logs."
+    },
+    "captureContent": {
+      "type": "boolean",
+      "default": false,
+      "description": "App Automate: capture response payload in network logs."
+    },
+
     "geoLocation": {
       "type": "string",
-      "description": "Country code (e.g., US, IN, CN)"
+      "description": "Two-letter country code to simulate geo-location (e.g., US, IN, CN)."
     },
-    "timezone": { "type": "string" },
-    "resolution": { "type": "string", "pattern": "^\\d+x\\d+$" },
-    "idleTimeout": { "type": "integer" },
+    "timezone": {
+      "type": "string",
+      "description": "IANA timezone city name (e.g., New_York, UTC, London)."
+    },
+    "resolution": {
+      "type": "string",
+      "pattern": "^\\d+x\\d+$",
+      "description": "Automate: screen resolution (e.g., '1024x768', '1920x1080')."
+    },
+    "idleTimeout": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 300,
+      "description": "Seconds to wait before ending an idle session. Default: 30 (Automate), 90 (App Automate). Max: 300."
+    },
+    "maskCommands": {
+      "type": "string",
+      "description": "Automate: comma-separated Selenium commands to mask in logs (e.g., 'setValues, getValues, setCookies, getCookies')."
+    },
+    "maskBasicAuth": {
+      "type": "boolean",
+      "description": "Automate: mask basic auth credentials in logs."
+    },
+    "autoWait": {
+      "type": "integer",
+      "description": "Automate: auto-wait timeout in seconds for elements to be interactable."
+    },
+    "hosts": {
+      "type": "string",
+      "description": "Automate: custom IP-to-hostname mapping (e.g., '1.2.3.4 staging.website.com')."
+    },
+    "bfcache": {
+      "type": "integer",
+      "enum": [0, 1],
+      "description": "Automate: enable (1) or disable (0) back/forward cache."
+    },
+    "wsLocalSupport": {
+      "type": "boolean",
+      "description": "Automate: enable WebSocket support via BrowserStack Local."
+    },
+    "disableCorsRestrictions": {
+      "type": "boolean",
+      "description": "Automate: disable CORS restrictions in the browser."
+    },
+    "httpProxy": {
+      "type": "string",
+      "description": "HTTP proxy URL for SDK traffic (e.g., 'http://user:pwd@127.0.0.1:1234')."
+    },
+    "httpsProxy": {
+      "type": "string",
+      "description": "HTTPS proxy URL for SDK traffic (e.g., 'https://user:pwd@127.0.0.1:1234')."
+    },
+
     "deviceOrientation": {
       "type": "string",
-      "enum": ["portrait", "landscape"]
+      "enum": ["portrait", "landscape"],
+      "description": "Screen orientation of mobile device."
     },
     "networkProfile": {
+      "type": "string",
       "enum": [
         "2g-gprs-good",
         "2g-gprs-lossy",
@@ -139,24 +417,97 @@
         "edge-lossy",
         "3g-umts-good",
         "3g-umts-lossy",
+        "3.5g-hspa-good",
+        "3.5g-hspa-lossy",
+        "3.5g-hspa-plus-good",
+        "3.5g-hspa-plus-lossy",
         "4g-lte-good",
         "4g-lte-lossy",
-        "no-internet"
-      ]
+        "4g-lte-advanced-good",
+        "4g-lte-advanced-lossy",
+        "5g-nr-good",
+        "5g-nr-lossy",
+        "no-network",
+        "no-internet",
+        "airplane-mode",
+        "reset-network"
+      ],
+      "description": "Simulate pre-defined network conditions."
     },
     "customNetwork": {
       "type": "string",
-      "description": "Download, Upload, Latency, Packet Loss"
+      "description": "Automate: custom network — download (kbps), upload (kbps), latency (ms), packet loss (%)."
     },
-    "disableCorsRestrictions": { "type": "boolean" },
-    "enableApplePay": { "type": "boolean" },
+
+    "resignApp": {
+      "type": "boolean",
+      "description": "App Automate (iOS only): set to false to disable re-signing of enterprise-signed apps."
+    },
+    "language": {
+      "type": "string",
+      "description": "App Automate: language of the app under test (e.g., 'Fr', 'En')."
+    },
+    "locale": {
+      "type": "string",
+      "description": "App Automate: device locale (e.g., 'Fr', 'En_US')."
+    },
+    "acceptInsecureCerts": {
+      "type": "boolean",
+      "description": "App Automate: accept self-signed/insecure SSL certificates."
+    },
+
+    "appiumVersion": {
+      "type": "string",
+      "description": "App Automate: Appium server version (e.g., '2.0.0')."
+    },
+    "automationName": {
+      "type": "string",
+      "enum": [
+        "UIAutomator2",
+        "XCUITest",
+        "Appium",
+        "Flutter",
+        "YouiEngine",
+        "UIAutomator1"
+      ],
+      "description": "App Automate: automation engine. UIAutomator2 (Android default), XCUITest (iOS default)."
+    },
+    "autoGrantPermissions": {
+      "type": "boolean",
+      "description": "App Automate: auto-grant app permissions on install."
+    },
+    "newCommandTimeout": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "App Automate: seconds to wait for a new Appium command before ending the session."
+    },
+
+    "testObservability": {
+      "type": "boolean",
+      "description": "Enable BrowserStack Test Observability for intelligent test reporting and debugging."
+    },
+
+    "enableApplePay": {
+      "type": "boolean",
+      "description": "Automate (Safari): enable Apple Pay testing."
+    },
     "percy": {
       "type": "object",
+      "description": "BrowserStack Percy visual testing configuration.",
       "properties": {
-        "enabled": { "type": "boolean" },
-        "captureMode": { "type": "string", "enum": ["auto", "manual", "click"] }
-      }
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable Percy visual testing."
+        },
+        "captureMode": {
+          "type": "string",
+          "enum": ["auto", "manual", "click"],
+          "description": "Screenshot capture mode."
+        }
+      },
+      "additionalProperties": false
     }
   },
-  "required": ["userName", "accessKey", "platforms"]
+  "required": ["userName", "accessKey", "platforms"],
+  "additionalProperties": false
 }
